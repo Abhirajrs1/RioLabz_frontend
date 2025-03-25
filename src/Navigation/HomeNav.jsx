@@ -26,14 +26,12 @@ function HomeNav() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
                 <Navbar.Collapse id="basic-navbar-nav">
-                    {/* Main Navigation Items */}
                     <Nav className="me-auto">
-                        <Nav.Link href="/dashboard">
+                        <Nav.Link href="/home">
                             <House className="me-2" /> Dashboard
                         </Nav.Link>
                     </Nav>
 
-                    {/* Adjusted Nav Alignment for Dropdown & Logout */}
                     <Nav className="me-4">  
                         {isAuthenticated ? (
                             <NavDropdown
@@ -44,8 +42,8 @@ function HomeNav() {
                                     </div>
                                 }
                                 id="user-nav-dropdown"
-                                align="end" // Aligns dropdown properly
-                                className="custom-dropdown" // Custom styling
+                                align="end" 
+                                className="custom-dropdown" 
                             >
                                 <NavDropdown.Item disabled className="text-center">
                                     <strong>{user.name}</strong>
@@ -58,14 +56,13 @@ function HomeNav() {
 
                                 <NavDropdown.Divider />
 
-                                {/* Conditional Menu Items Based on Role */}
                                 {user.role === 'admin' ? (
                                     <>
                                         <NavDropdown.Item href="/add-menu">
                                             <PlusCircle className="me-2" /> Add Menu
                                         </NavDropdown.Item>
 
-                                        <NavDropdown.Item onClick={() => navigate('/users-list')}>
+                                        <NavDropdown.Item onClick={() => navigate('/getAllUsers')}>
                                             <People className="me-2" /> Users
                                         </NavDropdown.Item>
                                     </>
