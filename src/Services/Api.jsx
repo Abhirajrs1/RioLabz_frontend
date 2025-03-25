@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from 'react'
-import Signup from "../Login/Signup";
 import Register from "../Register/Register";
+import Signin from "../Login/Signin";
 
 
 function Api() {
@@ -9,8 +9,8 @@ function Api() {
    <>
     <Router>
         <Routes>
-            <Route path="/login" element={<Signup/>}/>
-            <Route path="/register" element={<Register/>}/>
+            <Route path="/user-login" element={<Signin/>}/>
+            <Route path="/user-register" element={<Register/>}/>
         </Routes>
     </Router>
    </>

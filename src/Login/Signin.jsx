@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 
-function Signup() {
+function Signin() {
     const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
       const [error, setError] = useState('');
     
       const handleSignin = (e) => {
         e.preventDefault();
-        // Basic validation
         if (!email || !password) {
           setError('Please fill in all fields');
           return;
         }
-    
-        // Signin logic would go here
-        console.log('Signin attempt:', { email, password });
-        // Reset error
         setError('');
       };
   return (
@@ -55,7 +50,7 @@ function Signup() {
               </Button>
 
               <div className="text-center mt-3">
-                <a href="/signup" className="text-decoration-none">
+                <a href="/user-register" className="text-decoration-none">
                   Don't have an account? Sign Up
                 </a>
               </div>
@@ -68,4 +63,4 @@ function Signup() {
   )
 }
 
-export default Signup
+export default Signin
