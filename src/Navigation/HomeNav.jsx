@@ -58,8 +58,11 @@ function HomeNav() {
 
                                 {user.role === 'admin' ? (
                                     <>
-                                        <NavDropdown.Item href="/add-menu">
-                                            <PlusCircle className="me-2" /> Add Menu
+                                        <NavDropdown.Item href="/products">
+                                            <PlusCircle className="me-2" /> Add Food
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item href="/categories">
+                                            <PlusCircle className="me-2" /> Categories
                                         </NavDropdown.Item>
 
                                         <NavDropdown.Item onClick={() => navigate('/getAllUsers')}>
