@@ -68,7 +68,7 @@ function HomeNav() {
                                     </>
                                 ) : (
                                     <>
-                                        <NavDropdown.Item href="/profile">
+                                        <NavDropdown.Item href="/userProfile">
                                             <PersonCircle className="me-2" /> Profile
                                         </NavDropdown.Item>
 
