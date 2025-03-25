@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 import { loginValidationSchema } from '../Services/validation.js';
+import { AuthContext } from '../Context/Context';
+import Swal from 'sweetalert2';
 
-function Signup() {
-  const navigate = useNavigate(); 
+function Signin() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const { login, user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user) {
+      navigate('/home');
+    }
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -15,19 +24,35 @@ function Signup() {
 
   const handleSignin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    
     try {
       await loginValidationSchema.validate(formData, { abortEarly: false });
       setErrors({});
-      setError('')
-      setFormData({ email: '', password: '' });
-      navigate('/dashboard');
-
-    } catch (validationErrors) {
-      const errorMessages = {};
-      validationErrors.inner.forEach((error) => {
-        errorMessages[error.path] = error.message;
-      });
-      setErrors(errorMessages);
+      const success = await login(formData.email, formData.password);
+      if (success) {
+        navigate('/home');
+      } else {
+        setFormData({ email: '', password: '' });
+      }
+    } catch (error) {
+      if (error.name === 'ValidationError') {
+        const newErrors = {};
+        error.inner.forEach((err) => {
+          newErrors[err.path] = err.message;
+        });
+        setErrors(newErrors);
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message || 'Login failed',
+          icon: 'error',
+          timer: 5000,
+          position: 'top-center',
+        });
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,7 +63,6 @@ function Signup() {
           <Card>
             <Card.Header as="h3" className="text-center">Sign In</Card.Header>
             <Card.Body>
-              {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSignin}>
                 <Form.Group className="mb-3">
                   <Form.Label>Email address</Form.Label>
@@ -50,7 +74,9 @@ function Signup() {
                     onChange={handleChange}
                     isInvalid={!!errors.email}
                   />
-                  <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.email}
+                  </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -63,11 +89,18 @@ function Signup() {
                     onChange={handleChange}
                     isInvalid={!!errors.password}
                   />
-                  <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.password}
+                  </Form.Control.Feedback>
                 </Form.Group>
 
-                <Button variant="primary" type="submit" className="w-100">
-                  Sign In
+                <Button 
+                  variant="primary" 
+                  type="submit" 
+                  className="w-100"
+                  disabled={loading}
+                >
+                  {loading ? 'Signing In...' : 'Sign In'}
                 </Button>
 
                 <div className="text-center mt-3">
@@ -84,4 +117,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Signin;
